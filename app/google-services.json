@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "846231361877",
+    "project_id": "digipicdb",
+    "storage_bucket": "digipicdb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:846231361877:android:54705a913fd3a6ba97b7dc",
+        "android_client_info": {
+          "package_name": "com.example.digipic"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqZlprw3oBB9XPim-4Y0-mRoaom5ZvNCA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -18,6 +18,31 @@
         android:src="@drawable/signup_text" />
 
     <!-- Reusable EditText Group Template -->
+    <!-- Username -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/username"
+        android:textColor="#FFFFFF"
+        android:layout_gravity="start"
+        android:translationY="-10dp"
+        android:textSize="14sp" />
+    <EditText
+        android:id="@+id/etUsername"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/rounded_edittext"
+        android:hint="username"
+        android:inputType="textPersonName"
+        android:autofillHints="givenName"
+        android:importantForAccessibility="no"
+        android:layout_marginBottom="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textColor="#000000"
+        android:textColorHint="#99000000" />
+
+
     <!-- First Name -->
     <TextView
         android:layout_width="wrap_content"
@@ -28,6 +53,7 @@
         android:translationY="-10dp"
         android:textSize="14sp" />
     <EditText
+        android:id="@+id/etFirstName"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@drawable/rounded_edittext"
@@ -51,6 +77,7 @@
         android:layout_gravity="start"
         android:textSize="14sp" />
     <EditText
+        android:id="@+id/etMiddleName"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@drawable/rounded_edittext"
@@ -74,6 +101,7 @@
         android:textColor="#FFFFFF"
         android:textSize="14sp" />
     <EditText
+        android:id="@+id/etLastName"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@drawable/rounded_edittext"

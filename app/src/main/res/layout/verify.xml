@@ -10,9 +10,6 @@
 
     <!-- Larger Header Spacer -->
 
-
-    <!-- DigiPic Logo -->
-
     <!-- Title -->
     <ImageView
         android:id="@+id/logoImage"

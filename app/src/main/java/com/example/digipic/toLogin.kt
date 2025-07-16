@@ -46,6 +46,7 @@ class toLogin : AppCompatActivity() {
             Log.d("LOGIN_DEBUG", "Entered password: $password")
 
             // Step 1: Find email from Firestore based on username
+            // Step 1: Find email from Firestore based on username
             firestore.collection("users")
                 .whereEqualTo("username", username)
                 .get()

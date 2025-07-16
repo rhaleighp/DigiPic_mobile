@@ -18,6 +18,7 @@
         <activity android:name=".LastActivity" />
         <activity android:name=".toLogin" />
         <activity android:name=".toSignup" />
+        <activity android:name=".HomeActivity" />
 
 
         <!-- Launcher / Startup Activity -->

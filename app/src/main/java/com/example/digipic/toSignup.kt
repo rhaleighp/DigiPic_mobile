@@ -74,7 +74,7 @@ class toSignup : AppCompatActivity() {
                         firestore.collection("users").document(uid).set(user)
                             .addOnSuccessListener {
                                 Toast.makeText(this, "Sign-up successful!", Toast.LENGTH_SHORT).show()
-                                startActivity(Intent(this, toLogin::class.java))
+                                startActivity(Intent(this, VerifyActivity::class.java))
                                 finish()
                             }
                             .addOnFailureListener {

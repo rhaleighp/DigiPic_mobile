@@ -20,6 +20,10 @@
         <activity android:name=".toSignup" />
         <activity android:name=".HomeActivity" />
         <activity android:name=".VerifyActivity" />
+        <activity android:name=".CourseActivity" />
+        <activity android:name=".LessonAvailableActivity" />
+        <activity android:name=".LessonCompletedActivity" />
+
 
 
         <!-- Launcher / Startup Activity -->

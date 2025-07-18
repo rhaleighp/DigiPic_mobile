@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!-- Top Header -->
+    <LinearLayout
+        android:id="@+id/topHeader"
+        android:layout_width="match_parent"
+        android:layout_height="93dp"
+        android:background="@drawable/bg_gradient"
+        android:padding="16dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="130dp"
+            android:layout_height="153dp"
+            android:contentDescription="@string/logo"
+            android:src="@drawable/digipic_logo"
+            android:translationX="-15dp"
+            android:translationY="-45dp" />
+
+        <ImageView
+            android:id="@+id/backButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@string/back"
+            android:src="@drawable/bckbtn"
+            android:translationX="200dp"
+            android:translationY="8dp" />
+    </LinearLayout>
+
+    <!-- Question Counter -->
+    <TextView
+        android:id="@+id/questionCounter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/topHeader"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="16dp"
+        android:text="@string/question_counter"
+        android:textSize="12sp"
+        android:textColor="#6B0000"
+        android:textStyle="bold" />
+
+    <!-- Progress Bar -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:layout_below="@id/questionCounter"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:progress="10"
+        android:max="100"
+        android:progressTint="#6B0000"
+        android:backgroundTint="#F3D3D3" />
+
+    <!-- Scrollable Content -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="24dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <!-- Circular Image Container -->
+            <RelativeLayout
+                android:layout_width="240dp"
+                android:layout_height="240dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="16dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/rounded_edittext"
+                    android:contentDescription="@string/angle_shot"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/highangle" />
+            </RelativeLayout>
+
+            <!-- Question -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/types_of_angle_shots"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#6B0000"
+                android:gravity="center"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Answer Buttons -->
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="2"
+                android:rowCount="2"
+                android:alignmentMode="alignMargins"
+                android:rowOrderPreserved="false"
+                android:useDefaultMargins="true">
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:text="@string/long_shot"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="#6B0000"
+                    android:backgroundTint="#F4BEB9"
+                    android:padding="16dp"
+                    android:background="@drawable/rounded_card" />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:text="@string/cowboy_shot"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="#6B0000"
+                    android:backgroundTint="#F4BEB9"
+                    android:padding="16dp"
+                    android:background="@drawable/rounded_card" />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:text="@string/overhead_shot"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="#6B0000"
+                    android:backgroundTint="#F4BEB9"
+                    android:padding="16dp"
+                    android:background="@drawable/rounded_card" />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:text="@string/med_shot"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="#6B0000"
+                    android:backgroundTint="#F4BEB9"
+                    android:padding="16dp"
+                    android:background="@drawable/rounded_card" />
+            </GridLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Bottom Navigation -->
+    <LinearLayout
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bottom_nav"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:weightSum="5">
+
+        <ImageView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_home"
+            android:contentDescription="@string/home"
+            android:padding="8dp" />
+
+        <ImageView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_challenges"
+            android:contentDescription="@string/challenges"
+            android:padding="8dp" />
+
+        <ImageView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_gallery"
+            android:contentDescription="@string/gallery"
+            android:padding="8dp" />
+
+        <ImageView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_profile"
+            android:contentDescription="@string/profile"
+            android:padding="8dp" />
+
+        <ImageView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_settings"
+            android:contentDescription="@string/settings"
+            android:padding="8dp" />
+    </LinearLayout>
+</LinearLayout>

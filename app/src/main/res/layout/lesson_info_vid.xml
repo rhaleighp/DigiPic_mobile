@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Header -->
+    <LinearLayout
+        android:id="@+id/topHeader"
+        android:layout_width="match_parent"
+        android:layout_height="93dp"
+        android:background="@drawable/bg_gradient"
+        android:paddingHorizontal="16dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="130dp"
+            android:layout_height="153dp"
+            android:contentDescription="@string/logo"
+            android:src="@drawable/digipic_logo"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:layout_marginTop="-30dp"
+            android:layout_marginBottom="-30dp"
+            android:translationX="-15dp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/notificationIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@string/notifications"
+            android:src="@drawable/ic_notif"
+            android:scaleType="centerInside"
+            android:adjustViewBounds="true" />
+    </LinearLayout>
+
+    <!-- Main Content -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="24dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/basic_photography"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="#5B2C2F"
+                android:layout_marginTop="16dp" />
+
+            <!-- Tab Buttons -->
+            <LinearLayout
+                android:id="@+id/tabButtons"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <!-- Not selected -->
+                <Button
+                    android:id="@+id/tabIllustrations"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:minWidth="64dp"
+                    android:text="@string/illustrations"
+                    android:textColor="#7A3B32"
+                    android:backgroundTint="#EEEEEE"
+                    android:layout_marginEnd="8dp"
+                    android:paddingHorizontal="20dp"
+                    android:textSize="12sp"
+                    android:gravity="center" />
+
+                <!-- Selected -->
+                <Button
+                    android:id="@+id/tabVideo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:minWidth="64dp"
+                    android:text="@string/video"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/tab_selected"
+                    android:paddingHorizontal="20dp"
+                    android:textSize="12sp"
+                    android:gravity="center" />
+            </LinearLayout>
+
+            <!-- Video Placeholder -->
+            <LinearLayout
+                android:id="@+id/imageCarousel"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginTop="24dp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:baselineAligned="false">
+
+                <FrameLayout
+                    android:layout_width="220dp"
+                    android:layout_height="239dp"
+                    android:layout_marginHorizontal="8dp">
+
+                    <ImageView
+                        android:id="@+id/mainImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/video_placeholder"
+                        android:contentDescription="@string/video_placeholder"
+                        android:scaleType="centerCrop"
+                        android:adjustViewBounds="true" />
+
+                    <ImageButton
+                        android:id="@+id/playButton"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/ic_play_overlay"
+                        android:contentDescription="@string/play_video"
+                        android:scaleType="centerInside" />
+                </FrameLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/shotTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/high_angle_shot"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:textColor="#5B2C2F"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/shotDescription"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:text="@string/high_angle_description"
+                android:textAlignment="center"
+                android:textSize="14sp"
+                android:textColor="#7A3B32"
+                android:layout_marginTop="4dp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Bottom Navigation -->
+    <LinearLayout
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@drawable/bottom_nav"
+        android:elevation="6dp"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:weightSum="5">
+
+        <ImageView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_home"
+            android:contentDescription="@string/home"
+            android:scaleType="centerInside"
+            android:padding="8dp" />
+
+        <ImageView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_challenges"
+            android:contentDescription="@string/challenges"
+            android:scaleType="centerInside"
+            android:padding="8dp" />
+
+        <ImageView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_gallery"
+            android:contentDescription="@string/gallery"
+            android:scaleType="centerInside"
+            android:padding="8dp" />
+
+        <ImageView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_profile"
+            android:contentDescription="@string/profile"
+            android:scaleType="centerInside"
+            android:padding="8dp" />
+
+        <ImageView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_settings"
+            android:contentDescription="@string/settings"
+            android:scaleType="centerInside"
+            android:padding="8dp" />
+    </LinearLayout>
+</LinearLayout>

@@ -144,7 +144,11 @@
     <string name="cowboy_shot">Cowboy\nShot</string>
     <string name="overhead_shot">Overhead\nShot</string>
     <string name="med_shot">Medium\nShot</string>
-
-
+    <string name="video_placeholder">Video Placeholder</string>
+    <string name="avatar_profile">User Profile Image</string>
+    <string name="post_image">Posted Image</string>
+    <string name="like_post">Like this post</string>
+    <string name="comment_post">Comment on this post</string>
+    <string name="camera">Camera</string>
 
 </resources>

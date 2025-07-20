@@ -2,90 +2,84 @@ package com.example.digipic
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import org.json.JSONObject
+import java.io.IOException
 
 class toLogin : AppCompatActivity() {
 
-    private lateinit var auth: FirebaseAuth
-    private lateinit var firestore: FirebaseFirestore
+    private val client = OkHttpClient()
+    private val serverUrl = "http://10.0.2.2:5000/login" // Your backend login endpoint
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login)
 
-        // Initialize Firebase
-        auth = FirebaseAuth.getInstance()
-        firestore = FirebaseFirestore.getInstance()
-
         val etUsername = findViewById<EditText>(R.id.etUsername)
         val etPassword = findViewById<EditText>(R.id.etPassword)
         val btnLogin = findViewById<Button>(R.id.getStartedButton)
-        val signupText = findViewById<TextView>(R.id.tvSignup)
+        val tvSignup = findViewById<TextView>(R.id.tvSignup)
 
-        // Navigate to Sign Up screen
-        signupText.setOnClickListener {
+        tvSignup.setOnClickListener {
             val intent = Intent(this, toSignup::class.java)
             startActivity(intent)
         }
 
-        // Handle login
         btnLogin.setOnClickListener {
-            val username = etUsername.text.toString().trim().lowercase()
-            val password = etPassword.text.toString()
+            val username = etUsername.text.toString().trim()
+            val password = etPassword.text.toString().trim()
 
             if (username.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Please enter both username and password.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            Log.d("LOGIN_DEBUG", "Entered username: $username")
-            Log.d("LOGIN_DEBUG", "Entered password: $password")
+            val json = JSONObject().apply {
+                put("username", username)
+                put("password", password)
+            }
 
-            // Step 1: Find email from Firestore based on username
-            // Step 1: Find email from Firestore based on username
-            firestore.collection("users")
-                .whereEqualTo("username", username)
-                .get()
-                .addOnSuccessListener { documents ->
-                    if (documents.isEmpty) {
-                        Toast.makeText(this, "Username not found.", Toast.LENGTH_SHORT).show()
-                        Log.d("LOGIN_DEBUG", "No Firestore match for username: $username")
-                        return@addOnSuccessListener
+            val body = RequestBody.create(
+                "application/json".toMediaTypeOrNull(),
+                json.toString()
+            )
+
+            val request = Request.Builder()
+                .url(serverUrl)
+                .post(body)
+                .build()
+
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    runOnUiThread {
+                        Toast.makeText(this@toLogin, "Network error: ${e.message}", Toast.LENGTH_LONG).show()
                     }
+                }
 
-                    for (doc in documents) {
-                        Log.d("LOGIN_DEBUG", "Match: ${doc.getString("username")} -> ${doc.getString("email")}")
-                    }
-
-                    val email = documents.first().getString("email")
-                    if (email.isNullOrEmpty()) {
-                        Toast.makeText(this, "Email not linked to username.", Toast.LENGTH_SHORT).show()
-                        return@addOnSuccessListener
-                    }
-
-                    Log.d("LOGIN_DEBUG", "Resolved email: $email")
-
-                    // Step 2: Login with email and password
-                    auth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
-                                Toast.makeText(this, "Login successful!", Toast.LENGTH_SHORT).show()
-                                startActivity(Intent(this, HomeActivity::class.java))
-                                finish()
-                            } else {
-                                Toast.makeText(this, "Login failed: ${task.exception?.message}", Toast.LENGTH_LONG).show()
-                                Log.d("LOGIN_DEBUG", "Firebase login failed: ${task.exception?.message}")
+                override fun onResponse(call: Call, response: Response) {
+                    val responseBody = response.body?.string()
+                    runOnUiThread {
+                        if (response.isSuccessful) {
+                            // ✅ Save session using SharedPreferences
+                            val sharedPrefs = getSharedPreferences("DigiPicPrefs", MODE_PRIVATE)
+                            sharedPrefs.edit().apply {
+                                putBoolean("isLoggedIn", true)
+                                putString("userUsername", username) // 🔑 Save username
+                                apply()
                             }
+
+                            Toast.makeText(this@toLogin, "Login successful!", Toast.LENGTH_SHORT).show()
+                            startActivity(Intent(this@toLogin, HomeActivity::class.java))
+                            finish()
+                        } else {
+                            Toast.makeText(this@toLogin, "Login failed: $responseBody", Toast.LENGTH_LONG).show()
                         }
+                    }
                 }
-                .addOnFailureListener { e ->
-                    Toast.makeText(this, "Failed to find user: ${e.message}", Toast.LENGTH_LONG).show()
-                    Log.d("LOGIN_DEBUG", "Firestore error: ${e.message}")
-                }
+            })
         }
     }
 }

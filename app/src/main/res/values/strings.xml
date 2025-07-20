@@ -150,5 +150,8 @@
     <string name="like_post">Like this post</string>
     <string name="comment_post">Comment on this post</string>
     <string name="camera">Camera</string>
+    <string name="verification_prompt">Enter Verification Code</string>
+    <string name="verification_code_hint">6-digit code</string>
+    <string name="verify_button_text">Verify</string>
 
 </resources>

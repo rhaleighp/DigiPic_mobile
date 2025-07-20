@@ -3,16 +3,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/bg_gradient"
     android:padding="24dp"
-    android:gravity="center">
+    android:gravity="center_horizontal">
 
+    <!-- DigiPic Logo -->
+    <ImageView
+        android:id="@+id/logoImage"
+        android:layout_width="481dp"
+        android:layout_height="207dp"
+        android:layout_marginBottom="24dp"
+        android:contentDescription="DigiPic Logo"
+        android:src="@drawable/digipic_logo" />
+
+    <!-- Title -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter Verification Code"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="#fafdd6"
+        android:layout_marginBottom="12dp" />
+
+    <!-- Instruction Text -->
     <TextView
         android:text="@string/verification_prompt"
-        android:textSize="18sp"
+        android:textSize="16sp"
+        android:textColor="#fafdd6"
         android:layout_marginBottom="16dp"
+        android:textAlignment="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+    <!-- Verification Code Input -->
     <EditText
         android:id="@+id/etVerificationCode"
         android:hint="@string/verification_code_hint"
@@ -20,14 +44,21 @@
         android:minHeight="48dp"
         android:importantForAutofill="yes"
         android:autofillHints="sms_otp"
+        android:backgroundTint="#FFFFFF"
+        android:background="@drawable/rounded_edittext"
+        android:textColor="#000000"
+        android:padding="12dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <!-- Verify Button -->
     <Button
         android:id="@+id/btnVerifyCode"
         android:text="@string/verify_button_text"
         android:minHeight="48dp"
-        android:layout_marginTop="16dp"
+        android:background="@drawable/button_gradient"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="24dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </LinearLayout>

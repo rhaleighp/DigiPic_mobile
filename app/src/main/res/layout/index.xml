@@ -59,4 +59,18 @@
         android:textSize="14sp"
         android:textStyle="bold" />
 
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="48dp"
+        android:background="@drawable/button_gradient"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:text="Login"
+        android:textColor="#fafdd6"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
 </LinearLayout>

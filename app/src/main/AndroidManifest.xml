@@ -26,6 +26,7 @@
         <activity android:name=".CourseActivity" />
         <activity android:name=".LessonAvailableActivity" />
         <activity android:name=".LessonCompletedActivity" />
+        <activity android:name=".ModuleDetailActivity" />
 
 
 

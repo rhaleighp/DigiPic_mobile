@@ -51,7 +51,7 @@
         android:layout_marginTop="12dp"
         android:translationY="10dp" />
 
-    <!-- Course List -->
+    <!-- Course List Container -->
     <ScrollView
         android:layout_below="@id/chooseCourseTitle"
         android:layout_above="@+id/bottomNav"
@@ -60,135 +60,11 @@
         android:padding="24dp">
 
         <LinearLayout
+            android:id="@+id/courseListContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="32dp">
-
-            <!-- Course 1: Basic Photography -->
-            <LinearLayout
-                android:id="@+id/cardBasic"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginBottom="24dp"
-                android:background="@drawable/rounded_card"
-                android:padding="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Course 1"
-                    android:textStyle="bold"
-                    android:textColor="#6B0000"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Basic Photography"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="#000000"
-                    android:layout_marginBottom="8dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Learn camera basics, lighting, and composition."
-                    android:textColor="#6B0000"
-                    android:textSize="12sp" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="4dp"
-                    android:layout_marginTop="8dp"
-                    android:background="#6B0000" />
-            </LinearLayout>
-
-            <!-- Course 2: Photo Editing -->
-            <LinearLayout
-                android:id="@+id/cardEditing"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginBottom="24dp"
-                android:background="@drawable/rounded_card"
-                android:padding="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Course 2"
-                    android:textStyle="bold"
-                    android:textColor="#6B0000"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Photo Editing"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="#000000"
-                    android:layout_marginBottom="8dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Edit photos using tools like Lightroom and Photoshop."
-                    android:textColor="#6B0000"
-                    android:textSize="12sp" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="4dp"
-                    android:layout_marginTop="8dp"
-                    android:background="#6B0000" />
-            </LinearLayout>
-
-            <!-- Course 3: Mobile Photography -->
-            <LinearLayout
-                android:id="@+id/cardMobile"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginBottom="24dp"
-                android:background="@drawable/rounded_card"
-                android:padding="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Course 3"
-                    android:textStyle="bold"
-                    android:textColor="#6B0000"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Mobile Photography"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="#000000"
-                    android:layout_marginBottom="8dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Capture professional photos using your smartphone."
-                    android:textColor="#6B0000"
-                    android:textSize="12sp" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="4dp"
-                    android:layout_marginTop="8dp"
-                    android:background="#6B0000" />
-            </LinearLayout>
-
-        </LinearLayout>
+            android:paddingBottom="32dp" />
     </ScrollView>
 
     <!-- Bottom Navigation -->

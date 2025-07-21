@@ -44,6 +44,7 @@ class LessonAvailableActivity : AppCompatActivity() {
                 }
 
                 for (doc in docs) {
+                    val moduleId = doc.id
                     val moduleTitle = doc.getString("title") ?: "Untitled Module"
                     val moduleType = doc.getString("type") ?: "Text"
                     val moduleDescription = doc.getString("description") ?: "No description provided"
@@ -55,6 +56,7 @@ class LessonAvailableActivity : AppCompatActivity() {
 
                     view.setOnClickListener {
                         val intent = Intent(this, ModuleDetailActivity::class.java)
+                        intent.putExtra("moduleId", moduleId) // ✅ ADD THIS
                         intent.putExtra("moduleTitle", moduleTitle)
                         intent.putExtra("moduleContent", moduleDescription) // You could also use "filePath" or "videoUrl" here
                         intent.putExtra("moduleType", moduleType)

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -82,15 +84,15 @@
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp">
 
-                <ProgressBar
+                <com.google.android.material.progressindicator.CircularProgressIndicator
                     android:id="@+id/circularProgress"
-                    style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:indeterminate="false"
-                    android:max="100"
-                    android:progress="67"
-                    android:progressDrawable="@drawable/circular_progress_drawable" />
+                    app:indicatorSize="80dp"
+                    app:trackThickness="8dp"
+                    app:indicatorColor="@color/brown"
+                    app:trackColor="#eeeeee" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -101,24 +103,19 @@
                     android:paddingEnd="16dp">
 
                     <TextView
+                        android:id="@+id/dailyTaskTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/daily_task"
+                        android:text="Loading daily task..."
                         android:textColor="#000000"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/dailyTaskSubtitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/complete_15_chapters"
-                        android:textColor="#666666"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/chapters_to_go"
+                        android:text="Fetching progress..."
                         android:textColor="#999999"
                         android:textSize="12sp" />
                 </LinearLayout>

@@ -4,12 +4,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.firebase.firestore.FirebaseFirestore
 
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var firestore: FirebaseFirestore
     private lateinit var userNameText: TextView
+    private lateinit var progressIndicator: CircularProgressIndicator
+    private lateinit var dailyTaskTitle: TextView
+    private lateinit var dailyTaskSubtitle: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,24 +32,53 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.home)
 
         firestore = FirebaseFirestore.getInstance()
-        userNameText = findViewById(R.id.userNameText)
 
-        // ✅ Fetch user's data using username
+        // ⛳ Bind views
+        userNameText = findViewById(R.id.userNameText)
+        progressIndicator = findViewById(R.id.circularProgress)
+        dailyTaskTitle = findViewById(R.id.dailyTaskTitle)
+        dailyTaskSubtitle = findViewById(R.id.dailyTaskSubtitle)
+
+        // ✅ Load user and progress data
         firestore.collection("users")
             .whereEqualTo("username", username)
             .get()
-            .addOnSuccessListener { documents ->
-                if (!documents.isEmpty) {
-                    val usernameFetched = documents.first().getString("username")
-                    userNameText.text = usernameFetched ?: "User"
+            .addOnSuccessListener { userDocs ->
+                if (!userDocs.isEmpty) {
+                    val userDoc = userDocs.first()
+                    val userId = userDoc.id
+                    userNameText.text = userDoc.getString("username") ?: "User"
+
+                    // 🔁 Fetch completed modules count
+                    firestore.collection("users")
+                        .document(userId)
+                        .collection("completedModules")
+                        .get()
+                        .addOnSuccessListener { completedDocs ->
+                            val completedCount = completedDocs.size()
+
+                            // 🔁 Fetch total module count
+                            firestore.collection("modules")
+                                .get()
+                                .addOnSuccessListener { allModules ->
+                                    val totalModules = allModules.size()
+
+                                    val progressPercent = if (totalModules > 0) {
+                                        (completedCount * 100) / totalModules
+                                    } else 0
+
+                                    // ✅ Display progress
+                                    progressIndicator.progress = progressPercent
+                                    dailyTaskTitle.text = "Today's Progress"
+                                    dailyTaskSubtitle.text = "Modules Completed: $completedCount / $totalModules"
+                                }
+                        }
                 } else {
                     userNameText.text = "Unknown"
-                    Toast.makeText(this, "User not found", Toast.LENGTH_SHORT).show()
                 }
             }
-            .addOnFailureListener { e ->
-                userNameText.text = "Error"
-                Toast.makeText(this, "Error loading user: ${e.message}", Toast.LENGTH_SHORT).show()
+            .addOnFailureListener {
+                Toast.makeText(this, "Failed to load user", Toast.LENGTH_SHORT).show()
             }
 
         // ✅ Navigate to courses

@@ -32,7 +32,9 @@
         <activity android:name=".NewsFeedActivity" />
         <activity android:name=".QuizActivity" />
         <activity android:name=".QuizResultActivity" />
-
+        <activity android:name=".AccountManagementActivity" />
+        <activity android:name=".PasswordResetActivity" />
+        <activity android:name=".VerifyResetCodeActivity" />
 
 
 

@@ -51,6 +51,7 @@ class SettingsActivity : AppCompatActivity() {
 
         // Setup bottom navigation
         setupBottomNavigation()
+
     }
 
     // ✅ Function moved outside of onCreate
@@ -73,6 +74,9 @@ class SettingsActivity : AppCompatActivity() {
 
         findViewById<ImageView>(R.id.navLessons).setOnClickListener {
             startActivity(Intent(this, CourseActivity::class.java))
+        }
+        findViewById<TextView>(R.id.accountOption).setOnClickListener {
+            startActivity(Intent(this, AccountManagementActivity::class.java))
         }
     }
 }

@@ -27,7 +27,7 @@
         <activity android:name=".LessonAvailableActivity" />
         <activity android:name=".LessonCompletedActivity" />
         <activity android:name=".ModuleDetailActivity" />
-        <activity android:name=".ProfileActivity" />
+
 
 
 

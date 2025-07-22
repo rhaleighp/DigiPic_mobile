@@ -132,19 +132,6 @@ class HomeActivity : AppCompatActivity() {
             startActivity(Intent(this, CourseActivity::class.java))
         }
 
-        // Navigate to Bottom Navigation
-        findViewById<ImageButton>(R.id.mainGallery).setOnClickListener {
-            Toast.makeText(this, "Main Gallery clicked", Toast.LENGTH_SHORT).show()
-        }
-
-        findViewById<ImageView>(R.id.navLessons).setOnClickListener {
-            startActivity(Intent(this, CourseActivity::class.java))
-        }
-
-        findViewById<ImageView>(R.id.navProfile).setOnClickListener {
-            startActivity(Intent(this, ProfileActivity::class.java))
-        }
-
     }
 
 }

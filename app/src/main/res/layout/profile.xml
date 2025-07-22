@@ -81,6 +81,7 @@
 
             <!-- Username -->
             <TextView
+                android:id="@+id/userNameText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/username"
@@ -248,6 +249,7 @@
         android:weightSum="5">
 
         <ImageView
+            android:id="@+id/nav_home"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -256,6 +258,7 @@
             android:padding="8dp" />
 
         <ImageView
+            android:id="@+id/nav_challenges"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -264,6 +267,7 @@
             android:padding="8dp" />
 
         <ImageView
+            android:id="@+id/nav_gallery"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -272,6 +276,7 @@
             android:padding="8dp" />
 
         <ImageView
+            android:id="@+id/nav_profile"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -280,6 +285,7 @@
             android:padding="8dp" />
 
         <ImageView
+            android:id="@+id/nav_settings"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -287,4 +293,5 @@
             android:contentDescription="@string/settings"
             android:padding="8dp" />
     </LinearLayout>
+
 </LinearLayout>

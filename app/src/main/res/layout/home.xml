@@ -5,6 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <!-- Top Header -->
     <LinearLayout
         android:id="@+id/topHeader"
@@ -45,20 +46,17 @@
         android:layout_weight="1"
         android:padding="24dp">
 
-
-    <LinearLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Welcome -->
             <!-- Welcome -->
             <TextView
                 android:id="@+id/welcomeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/welcome"
-
                 android:textSize="18sp"
                 android:textColor="#000000" />
 
@@ -67,12 +65,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/username"
-
                 android:textSize="24sp"
                 android:textStyle="bold"
                 android:textColor="#A52A2A"
                 android:layout_marginBottom="16dp" />
 
+            <!-- Daily Task -->
             <!-- Daily Task -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -102,11 +100,22 @@
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp">
 
+                    <!-- 🔽 ADDED: Current Course inside the Daily Task -->
+                    <TextView
+                        android:id="@+id/currentCourseName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Current Course: Loading..."
+                        android:textColor="#333333"
+                        android:textSize="22sp"
+                        android:layout_marginBottom="6dp"
+                        android:textStyle="bold" />
+
                     <TextView
                         android:id="@+id/dailyTaskTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Loading daily task..."
+                        android:text="Today's Progress"
                         android:textColor="#000000"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -115,22 +124,22 @@
                         android:id="@+id/dailyTaskSubtitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Fetching progress..."
+                        android:text="Modules Completed: 0 / 0"
                         android:textColor="#999999"
                         android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/remainingCourses"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2 Courses to Go"
+                        android:textColor="#777777"
+                        android:textSize="13sp" />
                 </LinearLayout>
             </LinearLayout>
-
             <!-- Available Courses -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/available_courses"
-                android:textSize="18sp"
-                android:textColor="#000000"
-                android:textStyle="bold"
-                android:layout_marginBottom="8dp" />
 
+            <!-- Course Cards -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -140,7 +149,7 @@
                 <ImageButton
                     android:id="@+id/btnPhotography"
                     android:layout_width="0dp"
-                    android:layout_height="150dp"
+                    android:layout_height="200dp"
                     android:layout_weight="1"
                     android:layout_marginEnd="8dp"
                     android:background="@android:color/transparent"
@@ -151,7 +160,7 @@
                 <ImageButton
                     android:id="@+id/btnChallenges"
                     android:layout_width="0dp"
-                    android:layout_height="150dp"
+                    android:layout_height="200dp"
                     android:layout_weight="1"
                     android:layout_marginStart="8dp"
                     android:background="@android:color/transparent"
@@ -202,6 +211,7 @@
         android:weightSum="5">
 
         <ImageView
+            android:id="@+id/navHome"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -210,6 +220,7 @@
             android:padding="8dp" />
 
         <ImageView
+            android:id="@+id/mainGallery"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -218,6 +229,7 @@
             android:padding="8dp" />
 
         <ImageView
+            android:id="@+id/navLessons"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -226,6 +238,7 @@
             android:padding="8dp" />
 
         <ImageView
+            android:id="@+id/navProfile"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -234,6 +247,7 @@
             android:padding="8dp" />
 
         <ImageView
+            android:id="@+id/navSettings"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -241,4 +255,5 @@
             android:contentDescription="@string/settings"
             android:padding="8dp" />
     </LinearLayout>
+
 </LinearLayout>

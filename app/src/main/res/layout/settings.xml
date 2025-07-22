@@ -228,6 +228,7 @@
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="1dp"
         android:background="@drawable/bottom_nav"
         android:elevation="6dp"
         android:orientation="horizontal"
@@ -235,6 +236,7 @@
         android:weightSum="5">
 
         <ImageView
+            android:id="@+id/navHome"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -243,6 +245,7 @@
             android:padding="8dp" />
 
         <ImageView
+            android:id="@+id/mainGallery"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -251,6 +254,7 @@
             android:padding="8dp" />
 
         <ImageView
+            android:id="@+id/navLessons"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -259,6 +263,7 @@
             android:padding="8dp" />
 
         <ImageView
+            android:id="@+id/navProfile"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -267,6 +272,7 @@
             android:padding="8dp" />
 
         <ImageView
+            android:id="@+id/navSettings"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"

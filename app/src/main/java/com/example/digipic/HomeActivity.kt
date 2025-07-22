@@ -132,6 +132,28 @@ class HomeActivity : AppCompatActivity() {
             startActivity(Intent(this, CourseActivity::class.java))
         }
 
+        // Navigate to ProfileActivity when profile icon is clicked
+        findViewById<ImageView>(R.id.navProfile).setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
+        }
+
+        // Navigate to ProfileActivity when profile icon is clicked
+        findViewById<ImageView>(R.id.navSettings).setOnClickListener {
+            startActivity(Intent(this, SettingsActivity::class.java))
+        }
+        // Navigate to ProfileActivity when profile icon is clicked
+        findViewById<ImageView>(R.id.mainGallery).setOnClickListener {
+            startActivity(Intent(this, NewsFeedActivity::class.java))
+        }
+
+        // Navigate to ProfileActivity when profile icon is clicked
+        findViewById<ImageView>(R.id.navLessons).setOnClickListener {
+            startActivity(Intent(this, CourseActivity::class.java))
+        }
+
+
+
     }
+
 
 }

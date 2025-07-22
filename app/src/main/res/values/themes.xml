@@ -1,14 +1,14 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Use this as your main theme -->
-    <style name="Theme.DigiPic" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Primary branding color -->
+    <!-- Use Material 2 (not Material 3) -->
+    <style name="Theme.DigiPic" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@android:color/white</item>
         <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorPrimaryContainer">@color/purple_700</item>
 
-        <!-- Optional: status bar color -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
+        <!-- Remove Material 3 styling -->
+        <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button</item>
     </style>
 
 </resources>

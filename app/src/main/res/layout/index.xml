@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_gradient"
@@ -12,12 +13,7 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-    <!-- App Logo (Centered) -->
-
-    <!-- Tagline -->
-
-    <!-- Spacer to push button to bottom -->
-
+    <!-- App Logo -->
     <ImageView
         android:id="@+id/appLogo"
         android:layout_width="413dp"
@@ -27,6 +23,7 @@
         android:contentDescription="App Logo"
         android:src="@drawable/digipic_logo" />
 
+    <!-- Tagline -->
     <TextView
         android:id="@+id/tagline"
         android:layout_width="wrap_content"
@@ -38,36 +35,35 @@
         android:textSize="24sp"
         android:translationY="-120dp" />
 
-
+    <!-- Spacer to push buttons to bottom -->
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-    <!-- Get Started Button (pulled up 48dp) -->
-    <Button
+    <!-- Get Started Button -->
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/getStartedButton"
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="48dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/button_gradient"
-        android:fontFamily="sans-serif-medium"
-        android:gravity="center"
+        app:backgroundTint="@null"
         android:text="Get Started"
         android:textColor="#fafdd6"
         android:textSize="14sp"
         android:textStyle="bold" />
 
-    <Button
+    <!-- Login Button -->
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/loginButton"
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="48dp"
         android:background="@drawable/button_gradient"
-        android:fontFamily="sans-serif-medium"
-        android:gravity="center"
+        app:backgroundTint="@null"
         android:text="Login"
         android:textColor="#fafdd6"
         android:textSize="14sp"

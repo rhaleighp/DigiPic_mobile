@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import android.widget.ImageView
 
 class QuizResultActivity : AppCompatActivity() {
 
@@ -26,6 +27,28 @@ class QuizResultActivity : AppCompatActivity() {
             intent.putExtra("courseId", courseId)
             startActivity(intent)
             finish()
+            setupBottomNavigation()
+        }
+    }
+    private fun setupBottomNavigation() {
+        findViewById<ImageView>(R.id.navHome).setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+        }
+
+        findViewById<ImageView>(R.id.navProfile).setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
+        }
+
+        findViewById<ImageView>(R.id.navSettings).setOnClickListener {
+            startActivity(Intent(this, SettingsActivity::class.java))
+        }
+
+        findViewById<ImageView>(R.id.mainGallery).setOnClickListener {
+            startActivity(Intent(this, NewsFeedActivity::class.java))
+        }
+
+        findViewById<ImageView>(R.id.navLessons).setOnClickListener {
+            startActivity(Intent(this, CourseActivity::class.java))
         }
     }
 }

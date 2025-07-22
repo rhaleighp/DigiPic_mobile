@@ -45,6 +45,7 @@ class QuizActivity : AppCompatActivity() {
             return
         }
 
+        setupBottomNavigation()
         loadQuizQuestions(quizId)
     }
 
@@ -187,4 +188,25 @@ class QuizActivity : AppCompatActivity() {
         val choices: List<String>,
         val correctIndex: Int
     )
+    private fun setupBottomNavigation() {
+        findViewById<ImageView>(R.id.navHome).setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+        }
+
+        findViewById<ImageView>(R.id.navProfile).setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
+        }
+
+        findViewById<ImageView>(R.id.navSettings).setOnClickListener {
+            startActivity(Intent(this, SettingsActivity::class.java))
+        }
+
+        findViewById<ImageView>(R.id.mainGallery).setOnClickListener {
+            startActivity(Intent(this, NewsFeedActivity::class.java))
+        }
+
+        findViewById<ImageView>(R.id.navLessons).setOnClickListener {
+            startActivity(Intent(this, CourseActivity::class.java))
+        }
+    }
 }

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
+import android.widget.ImageView
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -48,12 +49,30 @@ class SettingsActivity : AppCompatActivity() {
             onBackPressed()
         }
 
-        // You can add click listeners here for:
-        // - Account
-        // - Notification
-        // - Delete Account
-        // - Report Bug
-        // - Send Feedback
-        // - FAQ
+        // Setup bottom navigation
+        setupBottomNavigation()
+    }
+
+    // ✅ Function moved outside of onCreate
+    private fun setupBottomNavigation() {
+        findViewById<ImageView>(R.id.navHome).setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+        }
+
+        findViewById<ImageView>(R.id.navProfile).setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
+        }
+
+        findViewById<ImageView>(R.id.navSettings).setOnClickListener {
+            startActivity(Intent(this, SettingsActivity::class.java))
+        }
+
+        findViewById<ImageView>(R.id.mainGallery).setOnClickListener {
+            startActivity(Intent(this, NewsFeedActivity::class.java))
+        }
+
+        findViewById<ImageView>(R.id.navLessons).setOnClickListener {
+            startActivity(Intent(this, CourseActivity::class.java))
+        }
     }
 }

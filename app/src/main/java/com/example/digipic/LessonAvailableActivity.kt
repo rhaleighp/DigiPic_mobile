@@ -8,6 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.FirebaseFirestore
+import android.widget.ImageView
 
 class LessonAvailableActivity : AppCompatActivity() {
 
@@ -40,6 +41,7 @@ class LessonAvailableActivity : AppCompatActivity() {
         }
 
         // 🔁 Load on start
+        setupBottomNavigation()
         fetchUserAndCompletedModules(username)
     }
 
@@ -55,6 +57,8 @@ class LessonAvailableActivity : AppCompatActivity() {
                     for (doc in completed) {
                         completedModules.add(doc.id)
                     }
+
+
                     loadModulesForCourse()
                 }
         }
@@ -136,5 +140,27 @@ class LessonAvailableActivity : AppCompatActivity() {
             .addOnFailureListener {
                 Toast.makeText(this, "Failed to load modules: ${it.message}", Toast.LENGTH_SHORT).show()
             }
+    }
+
+    private fun setupBottomNavigation() {
+        findViewById<ImageView>(R.id.navHome).setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+        }
+
+        findViewById<ImageView>(R.id.navProfile).setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
+        }
+
+        findViewById<ImageView>(R.id.navSettings).setOnClickListener {
+            startActivity(Intent(this, SettingsActivity::class.java))
+        }
+
+        findViewById<ImageView>(R.id.mainGallery).setOnClickListener {
+            startActivity(Intent(this, NewsFeedActivity::class.java))
+        }
+
+        findViewById<ImageView>(R.id.navLessons).setOnClickListener {
+            startActivity(Intent(this, CourseActivity::class.java))
+        }
     }
 }

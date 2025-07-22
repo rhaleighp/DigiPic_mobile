@@ -7,6 +7,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.FirebaseFirestore
+import android.widget.ImageView
 
 class ModuleDetailActivity : AppCompatActivity() {
 
@@ -38,6 +39,8 @@ class ModuleDetailActivity : AppCompatActivity() {
         headerText.text = type.uppercase()
         moduleTitle.text = title
         moduleContent.text = content
+
+        setupBottomNavigation()
 
         when (type.lowercase()) {
             "text" -> {
@@ -149,5 +152,27 @@ class ModuleDetailActivity : AppCompatActivity() {
                         }
                     }
             }
+    }
+
+    private fun setupBottomNavigation() {
+        findViewById<ImageView>(R.id.navHome).setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+        }
+
+        findViewById<ImageView>(R.id.navProfile).setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
+        }
+
+        findViewById<ImageView>(R.id.navSettings).setOnClickListener {
+            startActivity(Intent(this, SettingsActivity::class.java))
+        }
+
+        findViewById<ImageView>(R.id.mainGallery).setOnClickListener {
+            startActivity(Intent(this, NewsFeedActivity::class.java))
+        }
+
+        findViewById<ImageView>(R.id.navLessons).setOnClickListener {
+            startActivity(Intent(this, CourseActivity::class.java))
+        }
     }
 }

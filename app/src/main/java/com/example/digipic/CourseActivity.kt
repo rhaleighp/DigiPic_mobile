@@ -8,6 +8,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.FirebaseFirestore
+import android.widget.ImageView
+
 
 class CourseActivity : AppCompatActivity() {
 
@@ -22,6 +24,7 @@ class CourseActivity : AppCompatActivity() {
         courseContainer = findViewById(R.id.courseListContainer)
         db = FirebaseFirestore.getInstance()
 
+        setupBottomNavigation()
         loadUserProgress()
     }
 
@@ -100,6 +103,27 @@ class CourseActivity : AppCompatActivity() {
                 Toast.makeText(this, "Failed to load courses: ${it.message}", Toast.LENGTH_LONG).show()
             }
     }
+    private fun setupBottomNavigation() {
+        findViewById<ImageView>(R.id.navHome).setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+        }
+
+        findViewById<ImageView>(R.id.navProfile).setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
+        }
+
+        findViewById<ImageView>(R.id.navSettings).setOnClickListener {
+            startActivity(Intent(this, SettingsActivity::class.java))
+        }
+
+        findViewById<ImageView>(R.id.mainGallery).setOnClickListener {
+            startActivity(Intent(this, NewsFeedActivity::class.java))
+        }
+
+        findViewById<ImageView>(R.id.navLessons).setOnClickListener {
+            startActivity(Intent(this, CourseActivity::class.java))
+        }
+    }
 
     // ✅ Refresh after coming back
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -108,5 +132,8 @@ class CourseActivity : AppCompatActivity() {
         if (requestCode == 1002 && resultCode == RESULT_OK) {
             loadUserProgress()
         }
+
     }
+
+
 }

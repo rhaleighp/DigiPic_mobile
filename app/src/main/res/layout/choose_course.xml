@@ -126,4 +126,6 @@
             android:contentDescription="@string/settings"
             android:padding="8dp" />
     </LinearLayout>
+
+
 </RelativeLayout>

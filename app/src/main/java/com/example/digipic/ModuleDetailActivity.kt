@@ -16,7 +16,6 @@ class ModuleDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.lesson_info_txt)
 
-        // Get views
         val headerText = findViewById<TextView>(R.id.title)
         val moduleTitle = findViewById<TextView>(R.id.textTitle)
         val moduleContent = findViewById<TextView>(R.id.textContent)
@@ -24,17 +23,15 @@ class ModuleDetailActivity : AppCompatActivity() {
         val tabText = findViewById<Button>(R.id.tabText)
         markCompletedButton = findViewById(R.id.btnMarkCompleted)
 
-        // Get module data from Intent
         val title = intent.getStringExtra("moduleTitle") ?: "Untitled"
         val content = intent.getStringExtra("moduleContent") ?: "No description"
         val type = intent.getStringExtra("moduleType") ?: "text"
         val moduleId = intent.getStringExtra("moduleId")
+        val courseId = intent.getStringExtra("courseId")
 
-        // Get username from SharedPreferences
         val sharedPref = getSharedPreferences("DigiPicPrefs", MODE_PRIVATE)
         val username = sharedPref.getString("userUsername", null)
 
-        // Populate UI
         headerText.text = type.uppercase()
         moduleTitle.text = title
         moduleContent.text = content
@@ -47,51 +44,85 @@ class ModuleDetailActivity : AppCompatActivity() {
             "video" -> {
                 tabVideo.setBackgroundResource(R.drawable.tab_selected)
                 tabVideo.setTextColor(resources.getColor(android.R.color.white))
-                // Optional: video logic
             }
         }
 
-        // ✅ Mark as completed logic
-        markCompletedButton.setOnClickListener {
-            if (username != null && moduleId != null) {
-                // Step 1: Get the user document ID from Firestore
-                firestore.collection("users")
-                    .whereEqualTo("username", username)
-                    .get()
-                    .addOnSuccessListener { userDocs ->
-                        if (!userDocs.isEmpty) {
-                            val userDocId = userDocs.first().id
+        if (username != null && moduleId != null && courseId != null) {
+            // ✅ Check if this module is already completed and update button state
+            firestore.collection("users")
+                .whereEqualTo("username", username)
+                .get()
+                .addOnSuccessListener { userDocs ->
+                    if (!userDocs.isEmpty) {
+                        val userDocId = userDocs.first().id
 
-                            // Step 2: Save completion record
-                            val completionData = hashMapOf(
-                                "moduleId" to moduleId,
-                                "moduleTitle" to title,
-                                "completedAt" to System.currentTimeMillis()
-                            )
-
-                            firestore.collection("users")
-                                .document(userDocId)
-                                .collection("completedModules")
-                                .document(moduleId)
-                                .set(completionData)
-                                .addOnSuccessListener {
-                                    Toast.makeText(this, "Module marked as completed!", Toast.LENGTH_SHORT).show()
+                        firestore.collection("users")
+                            .document(userDocId)
+                            .collection("completedModules")
+                            .document(moduleId)
+                            .get()
+                            .addOnSuccessListener { completedDoc ->
+                                if (completedDoc.exists()) {
+                                    // 🔒 Already completed
                                     markCompletedButton.isEnabled = false
                                     markCompletedButton.text = "Completed"
+                                } else {
+                                    // ✅ Allow marking as completed
+                                    markCompletedButton.setOnClickListener {
+                                        val completionData = hashMapOf(
+                                            "completedAt" to System.currentTimeMillis(),
+                                            "courseId" to courseId
+                                        )
+
+                                        setResult(RESULT_OK)
+
+                                        firestore.collection("users")
+                                            .document(userDocId)
+                                            .collection("completedModules")
+                                            .document(moduleId)
+                                            .set(completionData)
+                                            .addOnSuccessListener {
+                                                setResult(RESULT_OK)
+                                                Toast.makeText(this, "Module marked as completed!", Toast.LENGTH_SHORT).show()
+                                                markCompletedButton.isEnabled = false
+                                                markCompletedButton.text = "Completed"
+                                                checkAllModulesCompleted(userDocId, courseId)
+                                            }
+                                    }
                                 }
-                                .addOnFailureListener {
-                                    Toast.makeText(this, "Failed to mark as completed", Toast.LENGTH_SHORT).show()
-                                }
-                        } else {
-                            Toast.makeText(this, "User not found", Toast.LENGTH_SHORT).show()
+                            }
+                    }
+                }
+        } else {
+            Toast.makeText(this, "Missing user or module info", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun checkAllModulesCompleted(userDocId: String, courseId: String) {
+        firestore.collection("modules")
+            .whereEqualTo("courseId", courseId)
+            .get()
+            .addOnSuccessListener { allModules ->
+                firestore.collection("users")
+                    .document(userDocId)
+                    .collection("completedModules")
+                    .get()
+                    .addOnSuccessListener { completedModules ->
+                        val allModuleIds = allModules.map { it.id }
+                        val completedIds = completedModules.map { it.id }
+
+                        if (allModuleIds.all { completedIds.contains(it) }) {
+                            val courseCompletion = hashMapOf(
+                                "courseId" to courseId,
+                                "completedAt" to System.currentTimeMillis()
+                            )
+                            firestore.collection("users")
+                                .document(userDocId)
+                                .collection("completedCourses")
+                                .document(courseId)
+                                .set(courseCompletion)
                         }
                     }
-                    .addOnFailureListener {
-                        Toast.makeText(this, "Failed to fetch user info", Toast.LENGTH_SHORT).show()
-                    }
-            } else {
-                Toast.makeText(this, "Missing user or module info", Toast.LENGTH_SHORT).show()
             }
-        }
     }
 }

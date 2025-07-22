@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -101,6 +102,7 @@
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
                     android:text="@string/long_shot"
+                    app:backgroundTint="@null"
                     android:textStyle="bold"
                     android:textSize="16sp"
                     android:textColor="#6B0000"
@@ -114,6 +116,7 @@
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
                     android:text="@string/cowboy_shot"
+                    app:backgroundTint="@null"
                     android:textStyle="bold"
                     android:textSize="16sp"
                     android:textColor="#6B0000"
@@ -127,6 +130,7 @@
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
                     android:text="@string/overhead_shot"
+                    app:backgroundTint="@null"
                     android:textStyle="bold"
                     android:textSize="16sp"
                     android:textColor="#6B0000"
@@ -140,6 +144,7 @@
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
                     android:text="@string/med_shot"
+                    app:backgroundTint="@null"
                     android:textStyle="bold"
                     android:textSize="16sp"
                     android:textColor="#6B0000"
@@ -155,12 +160,16 @@
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
         android:layout_height="64dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="1dp"
         android:background="@drawable/bottom_nav"
+        android:elevation="6dp"
         android:orientation="horizontal"
         android:padding="8dp"
         android:weightSum="5">
 
         <ImageView
+            android:id="@+id/navHome"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -169,6 +178,7 @@
             android:padding="8dp" />
 
         <ImageView
+            android:id="@+id/mainGallery"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -177,6 +187,7 @@
             android:padding="8dp" />
 
         <ImageView
+            android:id="@+id/navLessons"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -185,6 +196,7 @@
             android:padding="8dp" />
 
         <ImageView
+            android:id="@+id/navProfile"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -193,6 +205,7 @@
             android:padding="8dp" />
 
         <ImageView
+            android:id="@+id/navSettings"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -200,4 +213,5 @@
             android:contentDescription="@string/settings"
             android:padding="8dp" />
     </LinearLayout>
+
 </LinearLayout>

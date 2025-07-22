@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -80,6 +81,7 @@
                     android:layout_height="48dp"
                     android:background="@drawable/tab_selected"
                     android:gravity="center"
+                    app:backgroundTint="@null"
                     android:minWidth="64dp"
                     android:paddingHorizontal="20dp"
                     android:text="TEXT"
@@ -157,6 +159,8 @@
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
         android:layout_height="64dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="1dp"
         android:background="@drawable/bottom_nav"
         android:elevation="6dp"
         android:orientation="horizontal"
@@ -164,48 +168,49 @@
         android:weightSum="5">
 
         <ImageView
+            android:id="@+id/navHome"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:src="@drawable/ic_home"
             android:contentDescription="@string/home"
-            android:scaleType="centerInside"
             android:padding="8dp" />
 
         <ImageView
+            android:id="@+id/mainGallery"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:src="@drawable/ic_challenges"
             android:contentDescription="@string/challenges"
-            android:scaleType="centerInside"
             android:padding="8dp" />
 
         <ImageView
+            android:id="@+id/navLessons"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:src="@drawable/ic_gallery"
             android:contentDescription="@string/gallery"
-            android:scaleType="centerInside"
             android:padding="8dp" />
 
         <ImageView
+            android:id="@+id/navProfile"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:src="@drawable/ic_profile"
             android:contentDescription="@string/profile"
-            android:scaleType="centerInside"
             android:padding="8dp" />
 
         <ImageView
+            android:id="@+id/navSettings"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:src="@drawable/ic_settings"
             android:contentDescription="@string/settings"
-            android:scaleType="centerInside"
             android:padding="8dp" />
     </LinearLayout>
+
 </LinearLayout>

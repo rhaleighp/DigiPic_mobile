@@ -141,7 +141,6 @@
     </ScrollView>
 
     <!-- Bottom Navigation -->
-    <!-- Bottom Navigation -->
     <LinearLayout
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
@@ -199,4 +198,5 @@
             android:contentDescription="@string/settings"
             android:padding="8dp" />
     </LinearLayout>
+
 </LinearLayout>

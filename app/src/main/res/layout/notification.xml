@@ -121,6 +121,8 @@
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
         android:layout_height="64dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="1dp"
         android:background="@drawable/bottom_nav"
         android:elevation="6dp"
         android:orientation="horizontal"
@@ -128,43 +130,49 @@
         android:weightSum="5">
 
         <ImageView
+            android:id="@+id/navHome"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:src="@drawable/ic_home"
-            android:contentDescription="Home"
+            android:contentDescription="@string/home"
             android:padding="8dp" />
 
         <ImageView
+            android:id="@+id/mainGallery"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:src="@drawable/ic_challenges"
-            android:contentDescription="Challenges"
+            android:contentDescription="@string/challenges"
             android:padding="8dp" />
 
         <ImageView
+            android:id="@+id/navLessons"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:src="@drawable/ic_gallery"
-            android:contentDescription="Gallery"
+            android:contentDescription="@string/gallery"
             android:padding="8dp" />
 
         <ImageView
+            android:id="@+id/navProfile"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:src="@drawable/ic_profile"
-            android:contentDescription="Profile"
+            android:contentDescription="@string/profile"
             android:padding="8dp" />
 
         <ImageView
+            android:id="@+id/navSettings"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:src="@drawable/ic_settings"
-            android:contentDescription="Settings"
+            android:contentDescription="@string/settings"
             android:padding="8dp" />
     </LinearLayout>
+
 </LinearLayout>

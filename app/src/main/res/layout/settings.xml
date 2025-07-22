@@ -221,7 +221,6 @@
                 android:background="@drawable/button_gradient" />
         </LinearLayout>
     </ScrollView>
-
     <!-- Bottom Navigation -->
     <LinearLayout
         android:id="@+id/bottomNav"
@@ -280,4 +279,5 @@
             android:contentDescription="@string/settings"
             android:padding="8dp" />
     </LinearLayout>
+
 </LinearLayout>

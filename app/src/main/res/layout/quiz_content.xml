@@ -3,6 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <!-- Top Header -->
     <LinearLayout
         android:id="@+id/topHeader"
@@ -37,11 +38,9 @@
         android:id="@+id/questionCounter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/topHeader"
-        android:layout_alignParentStart="true"
         android:layout_marginTop="24dp"
         android:layout_marginStart="16dp"
-        android:text="@string/question_counter"
+        android:text="Question 1 of 5"
         android:textSize="12sp"
         android:textColor="#6B0000"
         android:textStyle="bold" />
@@ -52,11 +51,10 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="6dp"
-        android:layout_below="@id/questionCounter"
         android:layout_marginTop="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:progress="10"
+        android:progress="20"
         android:max="100"
         android:progressTint="#6B0000"
         android:backgroundTint="#F3D3D3" />
@@ -74,27 +72,12 @@
             android:orientation="vertical"
             android:gravity="center_horizontal">
 
-            <!-- Circular Image Container -->
-            <RelativeLayout
-                android:layout_width="240dp"
-                android:layout_height="240dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="16dp">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/rounded_edittext"
-                    android:contentDescription="@string/angle_shot"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/highangle" />
-            </RelativeLayout>
-
             <!-- Question -->
             <TextView
+                android:id="@+id/questionText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/types_of_angle_shots"
+                android:text="What type of camera angle is this?"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="#6B0000"
@@ -103,6 +86,7 @@
 
             <!-- Answer Buttons -->
             <GridLayout
+                android:id="@+id/answerGrid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:columnCount="2"
@@ -112,6 +96,7 @@
                 android:useDefaultMargins="true">
 
                 <Button
+                    android:id="@+id/option1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -124,6 +109,7 @@
                     android:background="@drawable/rounded_card" />
 
                 <Button
+                    android:id="@+id/option2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -136,6 +122,7 @@
                     android:background="@drawable/rounded_card" />
 
                 <Button
+                    android:id="@+id/option3"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -148,6 +135,7 @@
                     android:background="@drawable/rounded_card" />
 
                 <Button
+                    android:id="@+id/option4"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -167,7 +155,6 @@
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
         android:layout_height="64dp"
-        android:layout_alignParentBottom="true"
         android:background="@drawable/bottom_nav"
         android:orientation="horizontal"
         android:padding="8dp"

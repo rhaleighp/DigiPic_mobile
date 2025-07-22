@@ -1,5 +1,6 @@
 package com.example.digipic
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
@@ -10,6 +11,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 class ModuleDetailActivity : AppCompatActivity() {
 
     private lateinit var markCompletedButton: Button
+    private lateinit var quizButton: Button
     private val firestore = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,6 +24,7 @@ class ModuleDetailActivity : AppCompatActivity() {
         val tabVideo = findViewById<Button>(R.id.tabVideo)
         val tabText = findViewById<Button>(R.id.tabText)
         markCompletedButton = findViewById(R.id.btnMarkCompleted)
+        quizButton = findViewById(R.id.quizBtn)
 
         val title = intent.getStringExtra("moduleTitle") ?: "Untitled"
         val content = intent.getStringExtra("moduleContent") ?: "No description"
@@ -47,8 +50,32 @@ class ModuleDetailActivity : AppCompatActivity() {
             }
         }
 
+        // 🔍 Check if quiz exists and enable/disable the button accordingly
+        if (courseId != null && moduleId != null) {
+            firestore.collection("quizzes")
+                .whereEqualTo("courseId", courseId)
+                .whereEqualTo("moduleId", moduleId)
+                .limit(1)
+                .get()
+                .addOnSuccessListener { snapshot ->
+                    if (snapshot.isEmpty) {
+                        quizButton.isEnabled = false
+                        quizButton.alpha = 0.5f
+                    } else {
+                        val quizId = snapshot.documents.first().id
+                        quizButton.setOnClickListener {
+                            val intent = Intent(this, QuizActivity::class.java)
+                            intent.putExtra("quizId", quizId)
+                            intent.putExtra("moduleId", moduleId)
+                            intent.putExtra("courseId", courseId)
+                            startActivity(intent)
+                        }
+                    }
+                }
+        }
+
+        // 🔒 Completion tracking
         if (username != null && moduleId != null && courseId != null) {
-            // ✅ Check if this module is already completed and update button state
             firestore.collection("users")
                 .whereEqualTo("username", username)
                 .get()
@@ -63,11 +90,9 @@ class ModuleDetailActivity : AppCompatActivity() {
                             .get()
                             .addOnSuccessListener { completedDoc ->
                                 if (completedDoc.exists()) {
-                                    // 🔒 Already completed
                                     markCompletedButton.isEnabled = false
                                     markCompletedButton.text = "Completed"
                                 } else {
-                                    // ✅ Allow marking as completed
                                     markCompletedButton.setOnClickListener {
                                         val completionData = hashMapOf(
                                             "completedAt" to System.currentTimeMillis(),

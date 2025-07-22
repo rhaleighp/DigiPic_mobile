@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFF8F7"
+    android:gravity="center"
+    android:padding="32dp">
+
+
+    <!-- DigiPic Logo -->
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/digipic_logo"
+        android:layout_marginBottom="24dp"
+        android:contentDescription="Logo" />
+
+    <!-- Score Summary -->
+    <TextView
+        android:id="@+id/resultTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quiz Completed!"
+        android:textColor="#6B0000"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:id="@+id/scoreText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="You scored 4 out of 5"
+        android:textColor="#7A3B32"
+        android:textSize="18sp"
+        android:layout_marginBottom="32dp" />
+
+    <!-- Back to Home or Course -->
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Back to Course"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:backgroundTint="#6B0000"
+        android:paddingVertical="12dp" />
+</LinearLayout>

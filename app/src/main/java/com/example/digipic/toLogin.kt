@@ -22,9 +22,15 @@ class toLogin : AppCompatActivity() {
         val etPassword = findViewById<EditText>(R.id.etPassword)
         val btnLogin = findViewById<Button>(R.id.getStartedButton)
         val tvSignup = findViewById<TextView>(R.id.tvSignup)
+        val forgetPass = findViewById<TextView>(R.id.tvForgot)
 
         tvSignup.setOnClickListener {
             val intent = Intent(this, toSignup::class.java)
+            startActivity(intent)
+        }
+
+        forgetPass.setOnClickListener {
+            val intent = Intent(this, PasswordResetActivity::class.java)
             startActivity(intent)
         }
 

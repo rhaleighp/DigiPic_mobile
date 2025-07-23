@@ -36,6 +36,7 @@ class toSignup : AppCompatActivity() {
                 put("email", etEmail.text.toString())
                 put("password", etPassword.text.toString())
                 put("isMobile", true)
+                put("isUser", false)
             }
 
             val body = RequestBody.create(

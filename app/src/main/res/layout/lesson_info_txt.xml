@@ -42,6 +42,17 @@
             android:adjustViewBounds="true" />
     </LinearLayout>
 
+    <!-- Progress indicator while loading -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"/>
+
     <!-- Main Content -->
     <ScrollView
         android:layout_width="match_parent"
@@ -55,7 +66,7 @@
             android:orientation="vertical"
             android:gravity="center_horizontal">
 
-            <!-- Title -->
+            <!-- Module Type Header -->
             <TextView
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
@@ -105,17 +116,17 @@
                     android:id="@+id/quizBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="48dp"
+                    android:layout_marginEnd="8dp"
+                    android:backgroundTint="#EEEEEE"
+                    android:gravity="center"
                     android:minWidth="64dp"
+                    android:paddingHorizontal="20dp"
                     android:text="QUIZ"
                     android:textColor="#7A3B32"
-                    android:backgroundTint="#EEEEEE"
-                    android:layout_marginEnd="8dp"
-                    android:paddingHorizontal="20dp"
-                    android:textSize="12sp"
-                    android:gravity="center" />
+                    android:textSize="12sp" />
             </LinearLayout>
 
-            <!-- Text Content -->
+            <!-- Section Title -->
             <TextView
                 android:id="@+id/textTitle"
                 android:layout_width="wrap_content"
@@ -126,11 +137,12 @@
                 android:textColor="#5B2C2F"
                 android:layout_marginTop="24dp" />
 
+            <!-- Section Content -->
             <TextView
                 android:id="@+id/textContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="A high-angle shot is a cinematic technique where the camera looks down on the subject from above. It can make the subject appear smaller, weaker, or more vulnerable. This angle is commonly used in film, photography, and storytelling to convey emotion and tone."
+                android:text="A high-angle shot is a cinematic technique..."
                 android:justificationMode="inter_word"
                 android:textSize="14sp"
                 android:lineSpacingExtra="4dp"
@@ -138,6 +150,16 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginHorizontal="24dp" />
 
+            <!-- *** New container for all attachments *** -->
+            <LinearLayout
+                android:id="@+id/attachmentsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:layout_marginTop="16dp"/>
+
+            <!-- Mark Completed Button -->
             <Button
                 android:id="@+id/btnMarkCompleted"
                 android:layout_width="wrap_content"
@@ -148,8 +170,7 @@
                 android:textStyle="bold"
                 android:layout_marginTop="24dp"
                 android:paddingHorizontal="24dp"
-                android:paddingVertical="10dp"
-                />
+                android:paddingVertical="10dp" />
 
         </LinearLayout>
     </ScrollView>
@@ -159,8 +180,6 @@
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
         android:layout_height="64dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="1dp"
         android:background="@drawable/bottom_nav"
         android:elevation="6dp"
         android:orientation="horizontal"

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
-    <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">10.0.2.2</domain>
-    </domain-config>
+    <!-- Allow cleartext (HTTP) to all domains; if you want to lock down to your specific server,
+         replace <base-config> with a <domain-config> listing your host. -->
+    <base-config cleartextTrafficPermitted="true"/>
 </network-security-config>

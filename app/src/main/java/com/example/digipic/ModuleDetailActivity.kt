@@ -22,7 +22,7 @@ import java.io.IOException
 class ModuleDetailActivity : AppCompatActivity() {
 
     companion object {
-        private const val SERVER_IP = "192.168.18.11"
+        private const val SERVER_IP = "127.0.0.1"
     }
 
     private lateinit var headerText: TextView
@@ -182,6 +182,7 @@ class ModuleDetailActivity : AppCompatActivity() {
                             isEnabled = false
                             text = "Completed"
                         }
+                        setResult(RESULT_OK)  // ✅ Notify parent activity to reload
                         Toast.makeText(this@ModuleDetailActivity, "Module and course completion recorded!", Toast.LENGTH_SHORT).show()
                     } else {
                         Toast.makeText(this@ModuleDetailActivity, "Error: ${response.message}", Toast.LENGTH_LONG).show()
@@ -250,15 +251,16 @@ class ModuleDetailActivity : AppCompatActivity() {
     }
 
     private fun checkIfCompleted(email: String, moduleId: String, callback: (Boolean) -> Unit) {
-        val url = "http://$SERVER_IP:5000/users/${Uri.encode(email)}/completed-modules-count"
+        val url = "http://$SERVER_IP:5000/users/${Uri.encode(email)}/modules/${Uri.encode(moduleId)}/isCompleted"
         client.newCall(Request.Builder().url(url).build()).enqueue(object: Callback {
             override fun onFailure(call: Call, e: IOException) = runOnUiThread { callback(false) }
             override fun onResponse(call: Call, resp: Response) {
-                val count = resp.body?.string()?.let { JSONObject(it).optInt("count") } ?: 0
-                runOnUiThread { callback(count > 0) }
+                val completed = resp.body?.string()?.let { JSONObject(it).optBoolean("completed") } ?: false
+                runOnUiThread { callback(completed) }
             }
         })
     }
+
 
     private fun setupBottomNavigation() {
         findViewById<ImageView>(R.id.navHome).setOnClickListener { startActivity(Intent(this, HomeActivity::class.java)) }

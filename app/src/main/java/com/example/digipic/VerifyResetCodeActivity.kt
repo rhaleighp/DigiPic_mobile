@@ -17,7 +17,7 @@ class VerifyResetCodeActivity : AppCompatActivity() {
     private lateinit var btnVerifyCode: Button
     private val client = OkHttpClient()
 
-    private val backendUrl = "http://10.0.2.2:5000/verify-reset-code" // Update if needed
+    private val backendUrl = "http://127.0.0.1:5000/verify-reset-code" // Update if needed
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

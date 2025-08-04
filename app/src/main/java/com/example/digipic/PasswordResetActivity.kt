@@ -15,7 +15,7 @@ class PasswordResetActivity : AppCompatActivity() {
     private lateinit var emailInput: EditText
     private lateinit var resetPasswordBtn: Button
     private val client = OkHttpClient()
-    val backendUrl = "http://10.0.2.2:5000/send-reset-code"
+    val backendUrl = "http://127.0.0.1:5000/send-reset-code"
 
 
 

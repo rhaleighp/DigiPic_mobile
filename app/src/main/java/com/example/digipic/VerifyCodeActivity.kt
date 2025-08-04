@@ -13,7 +13,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 class VerifyCodeActivity : AppCompatActivity() {
 
     private val client = OkHttpClient()
-    private val verifyUrl = "http://10.0.2.2:5000/verify-code"
+    private val verifyUrl = "http://127.0.0.1:5000/verify-code"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

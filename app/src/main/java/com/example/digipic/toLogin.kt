@@ -16,7 +16,8 @@ class toLogin : AppCompatActivity() {
 
     private val client = OkHttpClient()
     // ← Replace with your PC’s actual LAN IP
-    private val serverUrl = "http://192.168.18.11:5000/login"
+    private val serverUrl = "http://127.0.0.1:5000/login"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

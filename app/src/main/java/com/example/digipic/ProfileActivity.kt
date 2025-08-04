@@ -23,7 +23,7 @@ class ProfileActivity : AppCompatActivity() {
     companion object {
         private const val PICK_IMAGE_REQUEST = 101
         // TODO: replace with your PC’s LAN IP
-        private const val SERVER_IP = "192.168.18.11"
+        private const val SERVER_IP = "127.0.0.1"
     }
 
     private lateinit var profileImage: ImageView

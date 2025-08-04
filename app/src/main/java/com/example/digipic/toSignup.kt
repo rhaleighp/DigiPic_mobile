@@ -12,7 +12,7 @@ import java.io.IOException
 class toSignup : AppCompatActivity() {
 
     private val client = OkHttpClient()
-    private val serverUrl = "http://10.0.2.2:5000/signup" // use your server IP
+    private val serverUrl = "http://127.0.0.1:5000/signup" // use your server IP
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -91,8 +91,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="48dp"
                     android:background="@drawable/tab_selected"
-                    android:gravity="center"
                     app:backgroundTint="@null"
+                    android:gravity="center"
                     android:minWidth="64dp"
                     android:paddingHorizontal="20dp"
                     android:text="TEXT"
@@ -150,14 +150,37 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginHorizontal="24dp" />
 
-            <!-- *** New container for all attachments *** -->
+            <!-- Sub-lessons header -->
+            <TextView
+                android:id="@+id/subLessonsHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Lessons"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                android:layout_marginTop="16dp"
+                android:layout_marginHorizontal="24dp" />
+
+            <!-- Sub-lessons container -->
+            <LinearLayout
+                android:id="@+id/subLessonsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:layout_marginTop="8dp"
+                android:layout_marginHorizontal="24dp" />
+
+            <!-- Attachments container -->
             <LinearLayout
                 android:id="@+id/attachmentsContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:visibility="gone"
-                android:layout_marginTop="16dp"/>
+                android:layout_marginTop="16dp"
+                android:layout_marginHorizontal="24dp" />
 
             <!-- Mark Completed Button -->
             <Button
@@ -170,7 +193,8 @@
                 android:textStyle="bold"
                 android:layout_marginTop="24dp"
                 android:paddingHorizontal="24dp"
-                android:paddingVertical="10dp" />
+                android:paddingVertical="10dp"
+                android:visibility="visible" />
 
         </LinearLayout>
     </ScrollView>

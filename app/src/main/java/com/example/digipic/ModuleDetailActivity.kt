@@ -22,7 +22,7 @@ import java.io.IOException
 class ModuleDetailActivity : AppCompatActivity() {
 
     companion object {
-        private const val SERVER_IP = "127.0.0.1"
+        private const val SERVER_IP = "127.0.0.1" // ✅ change to LAN IP if using real device
     }
 
     private lateinit var headerText: TextView
@@ -135,6 +135,11 @@ class ModuleDetailActivity : AppCompatActivity() {
         moduleTitle.text   = module.optString("title", "Untitled")
         moduleContent.text = module.optString("description", "")
 
+        // Force text color black in case theme overrides
+        headerText.setTextColor(ContextCompat.getColor(this, android.R.color.black))
+        moduleTitle.setTextColor(ContextCompat.getColor(this, android.R.color.black))
+        moduleContent.setTextColor(ContextCompat.getColor(this, android.R.color.black))
+
         // Check completion and setup button
         val userEmail = getSharedPreferences("DigiPicPrefs", MODE_PRIVATE).getString("userEmail", "") ?: ""
         if (userEmail.isNotBlank()) {
@@ -191,6 +196,7 @@ class ModuleDetailActivity : AppCompatActivity() {
             })
     }
 
+    /** Display all sub-lessons in black text **/
     private fun displaySubLessons(titles: JSONArray, descs: JSONArray?) {
         subLessonsContainer.removeAllViews()
         subLessonsHeader.visibility    = View.VISIBLE
@@ -202,16 +208,17 @@ class ModuleDetailActivity : AppCompatActivity() {
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
                 setTypeface(typeface, android.graphics.Typeface.BOLD)
                 setPadding(0, dpToPx(8), 0, dpToPx(4))
-                setTextColor(ContextCompat.getColor(context, android.R.color.black))
+                setTextColor(ContextCompat.getColor(context, android.R.color.black)) // ✅ black
                 layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
             }
             subLessonsContainer.addView(tvTitle)
+
             descs?.optString(i)?.takeIf { it.isNotBlank() }?.let { text ->
                 val tvDesc = TextView(this).apply {
                     this.text = text
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
                     setPadding(0, 0, 0, dpToPx(8))
-                    setTextColor(ContextCompat.getColor(context, android.R.color.darker_gray))
+                    setTextColor(ContextCompat.getColor(context, android.R.color.black)) // ✅ black
                     layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
                 }
                 subLessonsContainer.addView(tvDesc)
@@ -219,6 +226,7 @@ class ModuleDetailActivity : AppCompatActivity() {
         }
     }
 
+    /** Display all attachments and descriptions in black text **/
     private fun displayAttachments(arr: JSONArray) {
         attachmentsContainer.removeAllViews()
         for (i in 0 until arr.length()) {
@@ -239,7 +247,7 @@ class ModuleDetailActivity : AppCompatActivity() {
                 val tv = TextView(this).apply {
                     text = it
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
-                    setTextColor(ContextCompat.getColor(context, android.R.color.black))
+                    setTextColor(ContextCompat.getColor(context, android.R.color.black)) // ✅ black
                     layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
                         bottomMargin = resources.getDimensionPixelSize(R.dimen.attachment_margin)
                     }
@@ -261,7 +269,6 @@ class ModuleDetailActivity : AppCompatActivity() {
         })
     }
 
-
     private fun setupBottomNavigation() {
         findViewById<ImageView>(R.id.navHome).setOnClickListener { startActivity(Intent(this, HomeActivity::class.java)) }
         findViewById<ImageView>(R.id.mainGallery).setOnClickListener { startActivity(Intent(this, NewsFeedActivity::class.java)) }
@@ -270,5 +277,6 @@ class ModuleDetailActivity : AppCompatActivity() {
         findViewById<ImageView>(R.id.navSettings).setOnClickListener { startActivity(Intent(this, SettingsActivity::class.java)) }
     }
 
-    private fun dpToPx(dp: Int): Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), resources.displayMetrics).toInt()
+    private fun dpToPx(dp: Int): Int =
+        TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), resources.displayMetrics).toInt()
 }

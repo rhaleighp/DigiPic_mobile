@@ -153,7 +153,7 @@
                     android:layout_weight="1"
                     android:layout_marginEnd="8dp"
                     android:background="@android:color/transparent"
-                    android:src="@drawable/cmr_tch3"
+                    android:src="@drawable/card_photography"
                     android:contentDescription="@string/photography_card"
                     android:scaleType="centerCrop" />
 
@@ -164,7 +164,7 @@
                     android:layout_weight="1"
                     android:layout_marginStart="8dp"
                     android:background="@android:color/transparent"
-                    android:src="@drawable/cmr_tch4"
+                    android:src="@drawable/card_challenges"
                     android:contentDescription="@string/challenges_card"
                     android:scaleType="centerCrop" />
             </LinearLayout>

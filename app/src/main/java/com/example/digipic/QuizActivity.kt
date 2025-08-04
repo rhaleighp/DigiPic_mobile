@@ -1,10 +1,18 @@
+// QuizActivity.kt
 package com.example.digipic
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.*
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.FirebaseFirestore
+
+// Make sure this is defined *before* the activity
+data class QuizQuestion(
+    val question: String,
+    val choices: List<String>,
+    val correctIndex: Int
+)
 
 class QuizActivity : AppCompatActivity() {
 
@@ -14,7 +22,7 @@ class QuizActivity : AppCompatActivity() {
     private lateinit var backButton: ImageView
     private lateinit var optionButtons: List<Button>
 
-    private var questions: List<QuizQuestion> = emptyList()
+    private var questions = emptyList<QuizQuestion>()
     private var currentIndex = 0
     private var score = 0
 
@@ -24,10 +32,10 @@ class QuizActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.quiz_content)
 
-        questionText = findViewById(R.id.questionText)
+        questionText    = findViewById(R.id.questionText)
         questionCounter = findViewById(R.id.questionCounter)
-        progressBar = findViewById(R.id.progressBar)
-        backButton = findViewById(R.id.backButton)
+        progressBar     = findViewById(R.id.progressBar)
+        backButton      = findViewById(R.id.backButton)
 
         optionButtons = listOf(
             findViewById(R.id.option1),
@@ -38,9 +46,11 @@ class QuizActivity : AppCompatActivity() {
 
         backButton.setOnClickListener { onBackPressed() }
 
-        val quizId = intent.getStringExtra("quizId")
-        if (quizId == null) {
-            Toast.makeText(this, "Missing quiz ID", Toast.LENGTH_SHORT).show()
+        val quizId   = intent.getStringExtra("quizId")
+        val moduleId = intent.getStringExtra("moduleId")
+        val courseId = intent.getStringExtra("courseId")
+        if (quizId == null || moduleId == null || courseId == null) {
+            Toast.makeText(this, "Missing quiz/module/course ID", Toast.LENGTH_SHORT).show()
             finish()
             return
         }
@@ -56,28 +66,20 @@ class QuizActivity : AppCompatActivity() {
             .get()
             .addOnSuccessListener { snapshot ->
                 questions = snapshot.documents.mapNotNull { doc ->
-                    val questionText = doc.getString("question") ?: return@mapNotNull null
-                    val choicesMap = doc.get("choices") as? Map<*, *> ?: return@mapNotNull null
-                    val correctLetter = doc.getString("correctAnswer") ?: return@mapNotNull null
-
-                    val choices = listOf(
-                        choicesMap["A"] as? String ?: "",
-                        choicesMap["B"] as? String ?: "",
-                        choicesMap["C"] as? String ?: "",
-                        choicesMap["D"] as? String ?: ""
-                    )
-
-                    val correctIndex = when (correctLetter.uppercase()) {
-                        "A" -> 0
-                        "B" -> 1
-                        "C" -> 2
-                        "D" -> 3
-                        else -> -1
+                    val qText   = doc.getString("question") ?: return@mapNotNull null
+                    val choices = (doc.get("choices") as? Map<*, *>)?.let {
+                        listOf(
+                            it["A"] as? String ?: "",
+                            it["B"] as? String ?: "",
+                            it["C"] as? String ?: "",
+                            it["D"] as? String ?: ""
+                        )
+                    } ?: return@mapNotNull null
+                    val correctIdx = when (doc.getString("correctAnswer")?.uppercase()) {
+                        "A" -> 0; "B" -> 1; "C" -> 2; "D" -> 3; else -> -1
                     }
-
-                    if (correctIndex == -1) return@mapNotNull null
-
-                    QuizQuestion(questionText, choices, correctIndex)
+                    if (correctIdx < 0) return@mapNotNull null
+                    QuizQuestion(qText, choices, correctIdx)
                 }
 
                 if (questions.isEmpty()) {
@@ -100,24 +102,20 @@ class QuizActivity : AppCompatActivity() {
         }
 
         val q = questions[currentIndex]
-        questionText.text = q.question
+        questionText.text    = q.question
         questionCounter.text = "Question ${currentIndex + 1} of ${questions.size}"
         progressBar.progress = ((currentIndex + 1).toFloat() / questions.size * 100).toInt()
 
-        for (i in 0..3) {
-            optionButtons[i].text = q.choices[i]
-            optionButtons[i].isEnabled = true
-            optionButtons[i].setBackgroundResource(R.drawable.rounded_card)
-
-            optionButtons[i].setOnClickListener {
-                handleAnswer(i)
-            }
+        optionButtons.forEachIndexed { i, btn ->
+            btn.text              = q.choices[i]
+            btn.isEnabled         = true
+            btn.setBackgroundResource(R.drawable.rounded_card)
+            btn.setOnClickListener { handleAnswer(i) }
         }
     }
 
     private fun handleAnswer(selectedIndex: Int) {
         val correctIndex = questions[currentIndex].correctIndex
-
         if (selectedIndex == correctIndex) {
             score++
             Toast.makeText(this, "Correct!", Toast.LENGTH_SHORT).show()
@@ -135,78 +133,74 @@ class QuizActivity : AppCompatActivity() {
     }
 
     private fun saveQuizResult() {
-        val quizId = intent.getStringExtra("quizId") ?: return
+        val quizId   = intent.getStringExtra("quizId")   ?: return
         val moduleId = intent.getStringExtra("moduleId") ?: return
         val courseId = intent.getStringExtra("courseId") ?: return
 
-        val sharedPref = getSharedPreferences("DigiPicPrefs", MODE_PRIVATE)
-        val username = sharedPref.getString("userUsername", null) ?: return
+        val username = getSharedPreferences("DigiPicPrefs", MODE_PRIVATE)
+            .getString("userUsername", null) ?: return
 
         firestore.collection("users")
             .whereEqualTo("username", username)
             .get()
             .addOnSuccessListener { userDocs ->
-                if (!userDocs.isEmpty) {
-                    val userId = userDocs.first().id
-
-                    val result = hashMapOf(
-                        "score" to score,
-                        "total" to questions.size,
-                        "quizId" to quizId,
-                        "moduleId" to moduleId,
-                        "courseId" to courseId,
-                        "completedAt" to System.currentTimeMillis()
-                    )
-
-                    firestore.collection("users")
-                        .document(userId)
-                        .collection("quizResults")
-                        .document(quizId)
-                        .set(result)
-                        .addOnSuccessListener {
-                            val intent = Intent(this, QuizResultActivity::class.java)
-                            intent.putExtra("score", score)
-                            intent.putExtra("total", questions.size)
-                            intent.putExtra("courseId", courseId)
-                            startActivity(intent)
-                            finish()
-
-                        }
-                        .addOnFailureListener {
-                            Toast.makeText(this, "Failed to save quiz result", Toast.LENGTH_SHORT).show()
-                            finish()
-                        }
-                } else {
+                if (userDocs.isEmpty) {
                     Toast.makeText(this, "User not found", Toast.LENGTH_SHORT).show()
                     finish()
+                    return@addOnSuccessListener
                 }
+
+                val userId = userDocs.first().id
+                val result = hashMapOf(
+                    "score"       to score,
+                    "total"       to questions.size,
+                    "quizId"      to quizId,
+                    "moduleId"    to moduleId,
+                    "courseId"    to courseId,
+                    "completedAt" to System.currentTimeMillis()
+                )
+
+                firestore.collection("users")
+                    .document(userId)
+                    .collection("quizResults")
+                    .document(quizId)
+                    .set(result)
+                    .addOnSuccessListener {
+                        setResult(RESULT_OK)
+                        Intent(this, QuizResultActivity::class.java).also { intent2 ->
+                            intent2.putExtra("score", score)
+                            intent2.putExtra("total", questions.size)
+                            intent2.putExtra("courseId", courseId)
+                            startActivity(intent2)
+                            finish()
+                        }
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(this, "Failed to save quiz result", Toast.LENGTH_SHORT).show()
+                        finish()
+                    }
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Failed to find user", Toast.LENGTH_SHORT).show()
+                finish()
             }
     }
 
-    data class QuizQuestion(
-        val question: String,
-        val choices: List<String>,
-        val correctIndex: Int
-    )
     private fun setupBottomNavigation() {
         findViewById<ImageView>(R.id.navHome).setOnClickListener {
             startActivity(Intent(this, HomeActivity::class.java))
         }
-
-        findViewById<ImageView>(R.id.navProfile).setOnClickListener {
-            startActivity(Intent(this, ProfileActivity::class.java))
-        }
-
-        findViewById<ImageView>(R.id.navSettings).setOnClickListener {
-            startActivity(Intent(this, SettingsActivity::class.java))
-        }
-
         findViewById<ImageView>(R.id.mainGallery).setOnClickListener {
             startActivity(Intent(this, NewsFeedActivity::class.java))
         }
-
         findViewById<ImageView>(R.id.navLessons).setOnClickListener {
             startActivity(Intent(this, CourseActivity::class.java))
+        }
+        findViewById<ImageView>(R.id.navProfile).setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
+        }
+        findViewById<ImageView>(R.id.navSettings).setOnClickListener {
+            startActivity(Intent(this, SettingsActivity::class.java))
         }
     }
 }

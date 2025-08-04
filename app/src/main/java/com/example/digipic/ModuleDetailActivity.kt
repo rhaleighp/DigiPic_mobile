@@ -1,3 +1,4 @@
+// ModuleDetailActivity.kt
 package com.example.digipic
 
 import android.content.Intent
@@ -10,6 +11,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import com.google.firebase.firestore.FirebaseFirestore
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -22,7 +24,8 @@ import java.io.IOException
 class ModuleDetailActivity : AppCompatActivity() {
 
     companion object {
-        private const val SERVER_IP = "127.0.0.1" // ✅ change to LAN IP if using real device
+        private const val SERVER_IP    = "127.0.0.1"
+        private const val REQUEST_QUIZ = 1001
     }
 
     private lateinit var headerText: TextView
@@ -36,6 +39,7 @@ class ModuleDetailActivity : AppCompatActivity() {
     private lateinit var attachmentsContainer: LinearLayout
 
     private val client = OkHttpClient()
+    private val firestore = FirebaseFirestore.getInstance()
     private var fetchedQuizId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,71 +67,63 @@ class ModuleDetailActivity : AppCompatActivity() {
             return
         }
 
-        // Hide quiz until available
         quizButton.visibility = View.GONE
-
-        // Show loading spinner
         progressBar.visibility = View.VISIBLE
 
-        // Fetch module data
-        val moduleUrl = "http://$SERVER_IP:5000/modules/$moduleId"
-        client.newCall(Request.Builder().url(moduleUrl).get().build()).enqueue(object: Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                runOnUiThread {
+        // 1) Fetch module data from backend
+        client.newCall(Request.Builder()
+            .url("http://$SERVER_IP:5000/modules/$moduleId")
+            .get()
+            .build())
+            .enqueue(object: Callback {
+                override fun onFailure(call: Call, e: IOException) = runOnUiThread {
                     progressBar.visibility = View.GONE
                     Toast.makeText(this@ModuleDetailActivity, "Network error: ${e.message}", Toast.LENGTH_LONG).show()
                 }
-            }
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body?.string()
-                runOnUiThread {
-                    progressBar.visibility = View.GONE
-                    if (!response.isSuccessful || body == null) {
-                        Toast.makeText(this@ModuleDetailActivity, "Server error: ${response.message}", Toast.LENGTH_LONG).show()
-                        return@runOnUiThread
-                    }
-                    try {
-                        val moduleJson = JSONObject(body)
-                        moduleJson.put("id", moduleId)
-                        bindModuleData(moduleJson, courseId)
-                        fetchQuizForModule(moduleId)
-                    } catch (ex: Exception) {
-                        Toast.makeText(this@ModuleDetailActivity, "Parse error: ${ex.message}", Toast.LENGTH_LONG).show()
+                override fun onResponse(call: Call, response: Response) {
+                    val body = response.body?.string()
+                    runOnUiThread {
+                        progressBar.visibility = View.GONE
+                        if (!response.isSuccessful || body == null) {
+                            Toast.makeText(this@ModuleDetailActivity, "Server error", Toast.LENGTH_LONG).show()
+                            return@runOnUiThread
+                        }
+                        try {
+                            val moduleJson = JSONObject(body).apply {
+                                put("id", moduleId)
+                            }
+                            bindModuleData(moduleJson, courseId)
+                            // 2) Fetch only the first quiz from Firestore
+                            fetchFirstQuizFromFirestore(moduleId, courseId)
+                        } catch (ex: Exception) {
+                            Toast.makeText(this@ModuleDetailActivity, "Parse error: ${ex.message}", Toast.LENGTH_LONG).show()
+                        }
                     }
                 }
-            }
-        })
+            })
     }
 
-    private fun fetchQuizForModule(moduleId: String) {
-        val quizUrl = "http://$SERVER_IP:5000/quizzes"
-        client.newCall(Request.Builder().url(quizUrl).get().build()).enqueue(object: Callback {
-            override fun onFailure(call: Call, e: IOException) {}
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body?.string() ?: return
-                try {
-                    val quizzes = JSONObject(body).optJSONArray("quizzes") ?: JSONArray()
-                    for (i in 0 until quizzes.length()) {
-                        val q = quizzes.getJSONObject(i)
-                        if (q.optString("moduleId") == moduleId) {
-                            fetchedQuizId = q.optString("id")
-                            break
-                        }
-                    }
-                } catch (_: Exception) {}
-                runOnUiThread {
-                    fetchedQuizId?.let {
-                        quizButton.visibility = View.VISIBLE
-                        quizButton.setOnClickListener { _ ->
-                            startActivity(Intent(this@ModuleDetailActivity, QuizActivity::class.java).apply {
-                                putExtra("quizId", it)
-                                putExtra("moduleId", moduleId)
-                            })
-                        }
+    private fun fetchFirstQuizFromFirestore(moduleId: String, courseId: String) {
+        firestore.collection("quizzes")
+            .whereEqualTo("moduleId", moduleId)
+            .limit(1)
+            .get()
+            .addOnSuccessListener { snapshots ->
+                if (snapshots.isEmpty) return@addOnSuccessListener
+                fetchedQuizId = snapshots.documents[0].id
+                quizButton.visibility = View.VISIBLE
+                quizButton.setOnClickListener {
+                    Intent(this, QuizActivity::class.java).also { i ->
+                        i.putExtra("quizId",   fetchedQuizId)
+                        i.putExtra("moduleId", moduleId)
+                        i.putExtra("courseId", courseId)
+                        startActivityForResult(i, REQUEST_QUIZ)
                     }
                 }
             }
-        })
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Failed to load quiz: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun bindModuleData(module: JSONObject, courseId: String) {
@@ -135,13 +131,12 @@ class ModuleDetailActivity : AppCompatActivity() {
         moduleTitle.text   = module.optString("title", "Untitled")
         moduleContent.text = module.optString("description", "")
 
-        // Force text color black in case theme overrides
         headerText.setTextColor(ContextCompat.getColor(this, android.R.color.black))
         moduleTitle.setTextColor(ContextCompat.getColor(this, android.R.color.black))
         moduleContent.setTextColor(ContextCompat.getColor(this, android.R.color.black))
 
-        // Check completion and setup button
-        val userEmail = getSharedPreferences("DigiPicPrefs", MODE_PRIVATE).getString("userEmail", "") ?: ""
+        val userEmail = getSharedPreferences("DigiPicPrefs", MODE_PRIVATE)
+            .getString("userEmail", "") ?: ""
         if (userEmail.isNotBlank()) {
             checkIfCompleted(userEmail, module.getString("id")) { completed ->
                 if (completed) {
@@ -152,18 +147,15 @@ class ModuleDetailActivity : AppCompatActivity() {
                 } else {
                     markCompletedButton.apply {
                         isEnabled = true
-                        setOnClickListener { _ -> markModuleComplete(userEmail, module.getString("id"), courseId) }
+                        setOnClickListener { markModuleComplete(userEmail, module.getString("id"), courseId) }
                     }
                 }
             }
         }
 
-        // Display sub-lessons
         module.optJSONArray("moduleSubTitles")?.takeIf { it.length() > 0 }?.let {
             displaySubLessons(it, module.optJSONArray("moduleSubDescs"))
         }
-
-        // Display attachments
         module.optJSONArray("attachments")?.let { displayAttachments(it) }
     }
 
@@ -187,8 +179,8 @@ class ModuleDetailActivity : AppCompatActivity() {
                             isEnabled = false
                             text = "Completed"
                         }
-                        setResult(RESULT_OK)  // ✅ Notify parent activity to reload
-                        Toast.makeText(this@ModuleDetailActivity, "Module and course completion recorded!", Toast.LENGTH_SHORT).show()
+                        setResult(RESULT_OK)
+                        Toast.makeText(this@ModuleDetailActivity, "Module completion recorded!", Toast.LENGTH_SHORT).show()
                     } else {
                         Toast.makeText(this@ModuleDetailActivity, "Error: ${response.message}", Toast.LENGTH_LONG).show()
                     }
@@ -196,7 +188,6 @@ class ModuleDetailActivity : AppCompatActivity() {
             })
     }
 
-    /** Display all sub-lessons in black text **/
     private fun displaySubLessons(titles: JSONArray, descs: JSONArray?) {
         subLessonsContainer.removeAllViews()
         subLessonsHeader.visibility    = View.VISIBLE
@@ -208,8 +199,11 @@ class ModuleDetailActivity : AppCompatActivity() {
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
                 setTypeface(typeface, android.graphics.Typeface.BOLD)
                 setPadding(0, dpToPx(8), 0, dpToPx(4))
-                setTextColor(ContextCompat.getColor(context, android.R.color.black)) // ✅ black
-                layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                setTextColor(ContextCompat.getColor(context, android.R.color.black))
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
             }
             subLessonsContainer.addView(tvTitle)
 
@@ -218,15 +212,17 @@ class ModuleDetailActivity : AppCompatActivity() {
                     this.text = text
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
                     setPadding(0, 0, 0, dpToPx(8))
-                    setTextColor(ContextCompat.getColor(context, android.R.color.black)) // ✅ black
-                    layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                    setTextColor(ContextCompat.getColor(context, android.R.color.black))
+                    layoutParams = ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                    )
                 }
                 subLessonsContainer.addView(tvDesc)
             }
         }
     }
 
-    /** Display all attachments and descriptions in black text **/
     private fun displayAttachments(arr: JSONArray) {
         attachmentsContainer.removeAllViews()
         for (i in 0 until arr.length()) {
@@ -235,7 +231,10 @@ class ModuleDetailActivity : AppCompatActivity() {
             val desc = att.optString("description", "")
             path?.let {
                 val iv = ImageView(this).apply {
-                    layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, resources.getDimensionPixelSize(R.dimen.attachment_height)).apply {
+                    layoutParams = LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        resources.getDimensionPixelSize(R.dimen.attachment_height)
+                    ).apply {
                         bottomMargin = resources.getDimensionPixelSize(R.dimen.attachment_margin)
                     }
                     scaleType = ImageView.ScaleType.CENTER_CROP
@@ -247,21 +246,28 @@ class ModuleDetailActivity : AppCompatActivity() {
                 val tv = TextView(this).apply {
                     text = it
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
-                    setTextColor(ContextCompat.getColor(context, android.R.color.black)) // ✅ black
-                    layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
+                    setTextColor(ContextCompat.getColor(context, android.R.color.black))
+                    layoutParams = LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                    ).apply {
                         bottomMargin = resources.getDimensionPixelSize(R.dimen.attachment_margin)
                     }
                 }
                 attachmentsContainer.addView(tv)
             }
         }
-        if (attachmentsContainer.childCount > 0) attachmentsContainer.visibility = View.VISIBLE
+        if (attachmentsContainer.childCount > 0) {
+            attachmentsContainer.visibility = View.VISIBLE
+        }
     }
 
     private fun checkIfCompleted(email: String, moduleId: String, callback: (Boolean) -> Unit) {
         val url = "http://$SERVER_IP:5000/users/${Uri.encode(email)}/modules/${Uri.encode(moduleId)}/isCompleted"
         client.newCall(Request.Builder().url(url).build()).enqueue(object: Callback {
-            override fun onFailure(call: Call, e: IOException) = runOnUiThread { callback(false) }
+            override fun onFailure(call: Call, e: IOException) = runOnUiThread {
+                callback(false)
+            }
             override fun onResponse(call: Call, resp: Response) {
                 val completed = resp.body?.string()?.let { JSONObject(it).optBoolean("completed") } ?: false
                 runOnUiThread { callback(completed) }
@@ -270,13 +276,27 @@ class ModuleDetailActivity : AppCompatActivity() {
     }
 
     private fun setupBottomNavigation() {
-        findViewById<ImageView>(R.id.navHome).setOnClickListener { startActivity(Intent(this, HomeActivity::class.java)) }
-        findViewById<ImageView>(R.id.mainGallery).setOnClickListener { startActivity(Intent(this, NewsFeedActivity::class.java)) }
-        findViewById<ImageView>(R.id.navLessons).setOnClickListener { startActivity(Intent(this, CourseActivity::class.java)) }
-        findViewById<ImageView>(R.id.navProfile).setOnClickListener { startActivity(Intent(this, ProfileActivity::class.java)) }
-        findViewById<ImageView>(R.id.navSettings).setOnClickListener { startActivity(Intent(this, SettingsActivity::class.java)) }
+        findViewById<ImageView>(R.id.navHome).setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+        }
+        findViewById<ImageView>(R.id.mainGallery).setOnClickListener {
+            startActivity(Intent(this, NewsFeedActivity::class.java))
+        }
+        findViewById<ImageView>(R.id.navLessons).setOnClickListener {
+            startActivity(Intent(this, CourseActivity::class.java))
+        }
+        findViewById<ImageView>(R.id.navProfile).setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
+        }
+        findViewById<ImageView>(R.id.navSettings).setOnClickListener {
+            startActivity(Intent(this, SettingsActivity::class.java))
+        }
     }
 
     private fun dpToPx(dp: Int): Int =
-        TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), resources.displayMetrics).toInt()
+        TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            dp.toFloat(),
+            resources.displayMetrics
+        ).toInt()
 }
